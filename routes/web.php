@@ -16,11 +16,15 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard - accesible para todos los usuarios autenticados
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Ruta para perfil de empleado
+    // Ruta para perfil de empleado - solo para empleados
     Route::get('mi-perfil', [EmpleadoPerfilController::class, 'index'])->name('empleado.perfil');
+});
 
+// Rutas exclusivas para Administradores
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Rutas de Empleados
     Route::resource('empleados', EmpleadoController::class);
 
